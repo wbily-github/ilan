@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,45 +65,27 @@ public class LoginService {
         if (userDetails.isEnabled()) {
             return RespBean.error("账号被禁用，请联系管理员");
         }
+        List<UserDTO> users = loginDao.queryLoginInfo(userDto);
+
         //更新security登录用户对象
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null
+        log.info("$&^%$#$%&^#@" + userDetails.getAuthorities());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword()
                 , userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         //生成token
-        log.info("userDetails@@@@@@@@@@@@@@@@@@@"+userDetails.getPassword()+userDetails.getUsername()+userDetails.getAuthorities());
+        log.info("userDetails@@@@@@@@@@@@@@@@@@@" + userDetails.getPassword() + userDetails.getUsername() + userDetails.getAuthorities());
         String token = jwtTokenUtil.getToken(userDetails);
         Map<String, String> tokenMap = new HashMap<>(3);
         tokenMap.put("token", token);
+        tokenMap.put("username", userDto.getUsername());
+        if (null != users && users.size() > 0) {
+            tokenMap.put("icon", users.get(0).getIcon());
+        }
+        log.info("token++++++++++++++++++++++++++++" + token);
         tokenMap.put("tokenHead", tokenHead);
-        return RespBean.success("登陆成功", tokenMap);
+        return RespBean.success("登陆成功", tokenMap, 0);
     }
 
-    /**
-     * 登录
-     *
-     * @param userDto
-     * @param request
-     * @return
-     */
- /*   public RespBean login(UserDTO userDto, HttpServletRequest request) {
-        //登录
-        //  UserDetails userDetails = userDetailsService.loadUserByUsername(userDto.getUsername());
-        String captcha = (String) request.getSession().getAttribute("captcha");
-        if (StringUtils.isEmpty(userDto.getCode()) || !captcha.equalsIgnoreCase(userDto.getCode())) {
-            return RespBean.error("验证码输入错误，请重新输入！");
-        }
-        try {
-            List<UserDTO> users = loginDao.queryLoginInfo(userDto);
-            if (users.size() > 0) {
-                log.info("^^^^^^^^^^^^^^^^^^^^^^^" + RespBean.success("登陆成功", users));
-                return RespBean.success("登陆成功", users);
-            }
-            return RespBean.success("登录失败,账号或密码不对", null);
-        } catch (Exception e) {
-            log.info("失败了" + e.getMessage(), e);
-            return RespBean.error("登录失败，服务器异常", null);
-        }
-    }*/
 
     /**
      * 注册方法
@@ -113,17 +96,25 @@ public class LoginService {
      */
 
     public RespBean register(UserDTO userDto, HttpServletRequest request) {
-        String captcha = (String) request.getSession().getAttribute("captcha");
-        if (StringUtils.isEmpty(userDto.getCode()) || !captcha.equalsIgnoreCase(userDto.getCode())) {
-            return RespBean.error("验证码输入错误，请重新输入！");
-        }
+
         try {
+            String captcha = (String) request.getSession().getAttribute("captcha");
+            if (StringUtils.isEmpty(userDto.getCode()) || !captcha.equalsIgnoreCase(userDto.getCode())) {
+                return RespBean.error("验证码输入错误，请重新输入！");
+            }
+            UserDTO userdto1 = new UserDTO();
+            userdto1.setUsername(userDto.getUsername());
+            List<UserDTO> user11 = loginDao.queryLoginInfo(userdto1);
+            if (null != user11 && user11.size() > 0) {
+                return RespBean.error("该用户已注册，您可以直接使用该用户登录", user11);
+            }
             List<UserDTO> user1 = loginDao.queryTokenInfo(userDto);
             if (user1.size() == 0) {
                 return RespBean.error("注册失败,请输入正确令牌", user1);
             }
+
             loginDao.insertLoginInfo(userDto);
-            return RespBean.success("注册成功,", userDto);
+            return RespBean.success("注册成功", userDto, 0);
         } catch (Exception e) {
             log.info("失败了" + e.getMessage(), e);
             return RespBean.error("注册失败，服务器异常，主人没空改，洗洗睡吧", null);
@@ -137,7 +128,7 @@ public class LoginService {
      */
     public RespBean1 getKjjj() {
         try {
-            log.info("$$$$$"+SecurityContextHolder.getContext().getAuthentication());
+            log.info("$$$$$" + SecurityContextHolder.getContext().getAuthentication());
             List<UserDTO> user1 = loginDao.queryKjjj();
             return RespBean1.success(user1.get(0));
         } catch (Exception e) {
@@ -163,7 +154,8 @@ public class LoginService {
             return new UserDTO();
         }
     }
-    public List<SysRole> getRole(SysRole sysRole){
+
+    public List<SysRole> getRole(SysRole sysRole) {
         return loginDao.queryRoles(sysRole);
     }
 }

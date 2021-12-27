@@ -91,11 +91,24 @@ public class CaptchaController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/blog/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/blog/login/login", method = RequestMethod.POST)
     public RespBean login(@RequestBody UserDTO userDto, HttpServletRequest request) {
         log.info("#########QQQ登录入参QQQ#######" + userDto);
         return loginService.login(userDto, request);
     }
+    /**
+     * 注册方法
+     *
+     * @param userDto
+     * @param request
+     * @return
+     */
+    @PostMapping("/blog/login/register")
+    public RespBean register(@RequestBody UserDTO userDto, HttpServletRequest request) {
+        log.info("#########QQQ注册入参QQQ#######" + userDto);
+        return loginService.register(userDto, request);
+    }
+
 
     /**
      * 查询留言
@@ -136,30 +149,18 @@ public class CaptchaController {
         return queryService.insertArticleInfo(article);
     }
 
-    @PostMapping("/blog/kjjj")
+    @PostMapping("/blog/login/kjjj")
     public RespBean1 getKjjj(HttpServletRequest request) {
         log.info("#########QQQ简介查询入参QQQ#######");
 
         return loginService.getKjjj();
     }
 
-    /**
-     * 注册方法
-     *
-     * @param userDto
-     * @param request
-     * @return
-     */
-    @PostMapping("/blog/register")
-    public RespBean register(@RequestBody UserDTO userDto, HttpServletRequest request) {
-        log.info("#########QQQ注册入参QQQ#######" + userDto);
-        return loginService.register(userDto, request);
-    }
 
     /**
      * 今日份动态
      */
-    @PostMapping("/blog/getHot")
+    @PostMapping("/blog/login/getHot")
     public RespBean1 getArtToday() {
         log.info("#########QQQ动态入参QQQ#######");
         return queryService.getArticleToday();
@@ -190,6 +191,6 @@ public class CaptchaController {
 
     @PostMapping("/blog/logout")
     public RespBean logout() {
-        return RespBean.success("注销成功");
+        return RespBean.success("注销成功",0);
     }
 }

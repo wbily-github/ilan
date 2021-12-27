@@ -48,8 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 //允许登录访问
-                .antMatchers("/blog/login", "/blog/captcha", "/blog/getHot")
+                .antMatchers("/blog/login/**")
                 .permitAll()
+                .antMatchers("/blog/captcha").permitAll()
                 //拦截其他的，都需要认证
                 .anyRequest()
                 .authenticated()
@@ -70,25 +71,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return
      */
-   /* @Override
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> {
-            UserDTO userDTO = loginService.getUserByUserName(username);
-            if (null != userDTO && null != userDTO.getUsername()) {
-                return new org.springframework.security.core.userdetails.User(username,
-                        userDTO.getPassword(),
-                        true,
-                        true,
-                        true,
-                        true,
-                        getGrantedAuthority(username));
-            } else {
-                return null;
-
-            }
-        };
-    }*/
 
     public List<GrantedAuthority> getGrantedAuthority(String username) {
         List<GrantedAuthority> list = new ArrayList<>();

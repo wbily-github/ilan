@@ -9,8 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @MapperScan("com.yjg.blog.mybatis.dao")
 public class StartApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(StartApplication.class);
-			//new SpringApplicationBuilder(StartApplication.class).run(args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(StartApplication.class);
+    }
 }

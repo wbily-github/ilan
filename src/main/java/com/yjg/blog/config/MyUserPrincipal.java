@@ -5,27 +5,30 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 public class MyUserPrincipal implements UserDetails {
     private UserDTO user;
+    private List<GrantedAuthority> grantedAuthorities;
 
-    public MyUserPrincipal(UserDTO user) {
+    public MyUserPrincipal(UserDTO user, List<GrantedAuthority> grantedAuthorities) {
         this.user = user;
+        this.grantedAuthorities = grantedAuthorities;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.grantedAuthorities;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return this.user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return this.user.getUsername();
     }
 
     @Override

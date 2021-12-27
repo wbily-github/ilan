@@ -24,11 +24,12 @@ public class UserDTO implements UserDetails {
     private Long id;
     private String username;
     private String password;
+    private String icon;
     private String code;
     private String accountToken;
     private String kjjj;
 
-    private List<SysRole> roles;
+   // private List<SysRole> roles;
 
     public Long getId() {
         return id;
@@ -46,21 +47,17 @@ public class UserDTO implements UserDetails {
         this.password = password;
     }
 
-    public List<SysRole> getRoles() {
-        return roles;
-    }
+   // public List<SysRole> getRoles() {  return roles; }
 
-    public void setRoles(List<SysRole> roles) {
-        this.roles = roles;
-    }
+    //public void setRoles(List<SysRole> roles) {this.roles = roles;}
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> auths = new ArrayList<>();
-        List<SysRole> roles = this.getRoles();
-        for (SysRole role : roles) {
-            auths.add(new SimpleGrantedAuthority(role.getName()));
-        }
+      //  List<SysRole> roles = this.getRoles();
+        //for (SysRole role : roles) {
+       //     auths.add(new SimpleGrantedAuthority(role.getName()));
+       // }
         return auths;
     }
 

@@ -13,4 +13,7 @@ public class Article {
     private String urlKey;
     private String missTime;
     private String remark;
+    private String author;
+    private Integer page;
+    private Integer size;
 }

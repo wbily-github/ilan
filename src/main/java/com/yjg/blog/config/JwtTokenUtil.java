@@ -41,7 +41,7 @@ public class JwtTokenUtil {
         Map<String, Object> clains = new HashMap<>();
         clains.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
         clains.put(CLAIM_KEY_CREATED, new Date());
-        return getToken(clains);
+        return getToken1(clains);
     }
 
     /**
@@ -51,14 +51,13 @@ public class JwtTokenUtil {
      * @return
      */
     public String getUsername(String token) {
-        log.info("$$$$$$$$$$$$$$$$$$$$"+token);
+        log.info("$$$$$$$$$$$$$$$$$$$$" + token);
         String username = "";
         try {
             Claims claim = getClaimsFromToken(token);
             username = claim.getSubject();
         } catch (Exception e) {
-            log.error("这他喵是token？",e);
-            username = null;
+            log.error("这他喵是token？", e);
         }
         return username;
     }
@@ -70,17 +69,16 @@ public class JwtTokenUtil {
      * @return
      */
     private Claims getClaimsFromToken(String token) {
-        log.info("@tokenn##############"+token);
+        log.info("@tokenn##############" + token);
         Claims claims = null;
 
         try {
             claims = Jwts.parser()
                     .setSigningKey(secret)
-                    .parseClaimsJws(token)
-                    .getBody();
+                    .parseClaimsJws(token).getBody();
         } catch (ExpiredJwtException e) {
             e.getClaims();
-            log.error("转不了就是转不了"+e.getClaims());
+            log.error("转不了就是转不了" + e.getClaims());
         }
         return claims;
     }
@@ -92,7 +90,7 @@ public class JwtTokenUtil {
      */
     public Boolean isTokenUsing(String token, UserDetails userDetails) {
         String username = getUsername(token);
-        return username.equals(userDetails) && !isTokenUnse(token);
+        return username.equals(userDetails.getUsername()) && !isTokenUnse(token);
     }
 
     /**
@@ -107,13 +105,14 @@ public class JwtTokenUtil {
 
     /**
      * 刷新token
+     *
      * @param token
      * @return
      */
     public String refreshToken(String token) {
         Claims claims = getClaimsFromToken(token);
-        claims.put(CLAIM_KEY_CREATED,new Date());
-        return getToken(claims);
+        claims.put(CLAIM_KEY_CREATED, new Date());
+        return getToken1(claims);
     }
 
     /**
@@ -134,11 +133,12 @@ public class JwtTokenUtil {
      * @param claims
      * @return
      */
-    private String getToken(Map<String, Object> claims) {
+    private String getToken1(Map<String, Object> claims) {
+        log.info("bulabulabulabulabulabulabulabulabulabulabulabula000" + claims.toString());
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(generateExpiratoinDate())
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
 
@@ -148,7 +148,7 @@ public class JwtTokenUtil {
      * @return
      */
     private Date generateExpiratoinDate() {
-        return new Date();
+        return new Date((new Date()).getTime() + expiration*1000);
     }
 
 }

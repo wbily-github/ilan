@@ -1,8 +1,6 @@
 package com.yjg.blog.pojo;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * 公共返回对象
@@ -11,21 +9,21 @@ import lombok.NoArgsConstructor;
  * @since 1.0.0
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class RespBean {
     private Integer code;
     private String message;
     private Object obj;
-
+    private Integer total;
     /**
      * 成功返回结果
      *
      * @param message
      * @return
      */
-    public static RespBean success(String message) {
-        return new RespBean(200, message, null);
+    public static RespBean success(String message,Integer total) {
+        return new RespBean(200, message, null,total);
     }
 
 
@@ -36,8 +34,8 @@ public class RespBean {
      * @param obj
      * @return
      */
-    public static RespBean success(String message, Object obj) {
-        return new RespBean(200, message, obj);
+    public static RespBean success(String message, Object obj,Integer total) {
+        return new RespBean(200, message, obj,total);
     }
 
     /**
@@ -47,7 +45,7 @@ public class RespBean {
      * @return
      */
     public static RespBean error(String message) {
-        return new RespBean(500, message, null);
+        return new RespBean(500, message, null,0);
     }
 
     /**
@@ -58,6 +56,6 @@ public class RespBean {
      * @return
      */
     public static RespBean error(String message, Object obj) {
-        return new RespBean(500, message, obj);
+        return new RespBean(500, message, obj,0);
     }
 }
