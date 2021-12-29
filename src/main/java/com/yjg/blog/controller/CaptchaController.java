@@ -96,6 +96,7 @@ public class CaptchaController {
         log.info("#########QQQ登录入参QQQ#######" + userDto);
         return loginService.login(userDto, request);
     }
+
     /**
      * 注册方法
      *
@@ -108,7 +109,14 @@ public class CaptchaController {
         log.info("#########QQQ注册入参QQQ#######" + userDto);
         return loginService.register(userDto, request);
     }
+    /**
+     *更新用户信息
+     */
+    @PostMapping("/blog/user/update")
+    public RespBean saveUserInfo(@RequestBody UserDTO userDto, HttpServletRequest request) {
 
+        return loginService.updateUser(userDto);
+    }
 
     /**
      * 查询留言
@@ -157,6 +165,7 @@ public class CaptchaController {
     }
 
 
+
     /**
      * 今日份动态
      */
@@ -191,6 +200,6 @@ public class CaptchaController {
 
     @PostMapping("/blog/logout")
     public RespBean logout() {
-        return RespBean.success("注销成功",0);
+        return RespBean.success("注销成功", 0);
     }
 }

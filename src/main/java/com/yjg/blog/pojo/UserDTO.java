@@ -28,6 +28,7 @@ public class UserDTO implements UserDetails {
     private String code;
     private String accountToken;
     private String kjjj;
+    private Integer nameChangeTime;
 
    // private List<SysRole> roles;
 

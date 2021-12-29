@@ -66,7 +66,6 @@ public class LoginService {
             return RespBean.error("账号被禁用，请联系管理员");
         }
         List<UserDTO> users = loginDao.queryLoginInfo(userDto);
-
         //更新security登录用户对象
         log.info("$&^%$#$%&^#@" + userDetails.getAuthorities());
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword()
@@ -112,7 +111,6 @@ public class LoginService {
             if (user1.size() == 0) {
                 return RespBean.error("注册失败,请输入正确令牌", user1);
             }
-
             loginDao.insertLoginInfo(userDto);
             return RespBean.success("注册成功", userDto, 0);
         } catch (Exception e) {
@@ -155,7 +153,29 @@ public class LoginService {
         }
     }
 
-    public List<SysRole> getRole(SysRole sysRole) {
-        return loginDao.queryRoles(sysRole);
+    /**
+     * 新增修改个人信息方法
+     *
+     * @param userDto
+     * @return
+     */
+    public RespBean updateUser(UserDTO userDto) {
+        try {
+            UserDTO dto = new UserDTO();
+            dto.setId(userDto.getId());
+            List<UserDTO> user11 = loginDao.queryLoginInfo(userDto);
+            if (null != user11 || user11.size() == 0) {
+                return RespBean.error("用户信息不存在");
+            } else if (user11.get(0).getUsername() != userDto.getUsername()) {
+                if(0 == user11.get(0).getNameChangeTime()){
+                    return RespBean.error("修改失败,距离上次修改用户名未满一个月，不能修改");
+                }
+            }
+            loginDao.updateUserInfo(userDto);
+            return RespBean.success("修改成功", userDto, 1);
+        } catch (Exception e) {
+            log.error("修改失败", e);
+            return RespBean.error("修改失败");
+        }
     }
 }
