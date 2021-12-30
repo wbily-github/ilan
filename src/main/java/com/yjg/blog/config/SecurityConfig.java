@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/blog/login/**")
                 .permitAll()
                 .antMatchers("/blog/captcha").permitAll()
+                .antMatchers("/file/uploadFast").permitAll()
                 //拦截其他的，都需要认证
                 .anyRequest()
                 .authenticated()
