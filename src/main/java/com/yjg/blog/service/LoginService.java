@@ -52,6 +52,7 @@ public class LoginService {
      */
     public RespBean login(UserDTO userDto, HttpServletRequest request) {
         //登录
+        log.info("userDto^^^^^^^^^^" + userDto);
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(userDto.getUsername());
         String captcha = (String) request.getSession().getAttribute("captcha");
         if (StringUtils.isEmpty(userDto.getCode()) || !captcha.equalsIgnoreCase(userDto.getCode())) {
@@ -147,7 +148,7 @@ public class LoginService {
             return users.get(0);
         } else {
             log.info("有没有搞错，都没查出来却能登陆");
-            return new UserDTO();
+            return null;
         }
     }
 
@@ -161,9 +162,9 @@ public class LoginService {
         try {
             UserDTO dto = new UserDTO();
             dto.setId(userDto.getId());
-            List<UserDTO> user11 = loginDao.queryLoginInfo(userDto);
+            List<UserDTO> user11 = loginDao.queryLoginInfo(dto);
             if (null == user11 || user11.size() == 0) {
-                return RespBean.error("用户信息不存在");
+                return RespBean.error("用户信息不存在", user11);
             } else if (user11.get(0).getUsername() != userDto.getUsername()
                     && 0 == user11.get(0).getNameChangeTime()) {
                 return RespBean.error("修改失败,距离上次修改用户名未满一个月，不能修改");

@@ -35,13 +35,16 @@ public class MyUserDetailsService implements UserDetailsService {
      @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
         UserDTO user = loginService.getUserByUserName(username);
-        log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+user.toString());
          List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
          GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_ADMIN");
          //此处将权限信息添加到 GrantedAuthority 对象中，在后面进行权限验证时会使用GrantedAuthority 对象。
          grantedAuthorities.add(grantedAuthority);
          MyUserPrincipal jwtUser = new MyUserPrincipal(user, grantedAuthorities);
-         return jwtUser;
+         if(null != user) {
+             return jwtUser;
+         }else{
+             return null;
+         }
     }
 
 }

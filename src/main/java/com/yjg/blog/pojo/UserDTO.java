@@ -27,6 +27,7 @@ public class UserDTO implements UserDetails {
     private String icon;
     private String code;
     private String accountToken;
+    private String sbbsj;
     private String kjjj;
     private Integer nameChangeTime;
 

@@ -19,8 +19,8 @@ import java.util.List;
 @Mapper
 public interface LoginDAO {
     @Select("<script> select username,icon,DATE_ADD(now(),INTERVAL -2 MONTH)> nameChangeTime as nameChangeTime" +
-            ", id,qx,sbbsj  from user where 1=1 "
-            + "<if test='id!= null and !\"\".equals(id)'> and id = #{id} </if>"
+            ", id,qx,DATE_FORMAT(sbbsj,'%Y-%m-%d %H:%i') as sbbsj  from user where 1=1 "
+            + "<if test='id!= null '> and id = ${id} </if>"
             + "<if test='username!= null and !\"\".equals(username)'> and username = #{username} </if>"
             + "<if test='password!= null and !\"\".equals(password)'> and password = #{password} </if>" +
             "</script>")
