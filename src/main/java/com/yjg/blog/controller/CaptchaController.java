@@ -109,8 +109,9 @@ public class CaptchaController {
         log.info("#########QQQ注册入参QQQ#######" + userDto);
         return loginService.register(userDto, request);
     }
+
     /**
-     *更新用户信息
+     * 更新用户信息
      */
     @PostMapping("/blog/user/update")
     public RespBean saveUserInfo(@RequestBody UserDTO userDto, HttpServletRequest request) {
@@ -163,7 +164,6 @@ public class CaptchaController {
 
         return loginService.getKjjj();
     }
-
 
 
     /**

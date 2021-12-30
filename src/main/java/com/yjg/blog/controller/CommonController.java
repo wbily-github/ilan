@@ -7,10 +7,9 @@ import com.yjg.blog.utils.FastDFSClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.csource.fastdfs.FileInfo;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.filechooser.FileSystemView;
@@ -21,18 +20,20 @@ import java.io.FileOutputStream;
 @Slf4j
 @RestController
 public class CommonController {
+    @Value("${service.se}")
+    private String service;
     private String CONF_FILENAME = "fdfs_client.properties";
 
     /**
      * 文件上传
      *
-     * @param fileDTO
+     * @param
      * @param request
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "file/uploadFast", method = RequestMethod.POST)
-    public RespBean uploadFast(@RequestBody FileDTO fileDTO, HttpServletRequest request) throws Exception {
+    @RequestMapping(value = "/file/uploadFast", method = RequestMethod.POST)
+    public RespBean uploadFast( @RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
         // 1、把FastDFS提供的jar包添加到工程中
         // 2、初始化全局配置。加载一个配置文件。
         try {
@@ -41,13 +42,17 @@ public class CommonController {
                     .getResource(CONF_FILENAME)
                     .getPath();
             FastDFSClient fastDFSClient = new FastDFSClient(confUrl);
+            System.out.println("入参：" +file.toString());
+            String contentType = file.getContentType();
+            //校检文件的类型
+            byte[] imgBytes = file.getBytes();
             //上传文件
-            //String filePath = fastDFSClient.uploadFile(fileDTO.getUploadFile());
-            String filePath = fastDFSClient.uploadFile("C:/Users/Administrator/Desktop/id.jpg");
-            System.out.println("返回路径：" + filePath);
-            fileDTO.setFilePath(filePath);
+            String filePath = fastDFSClient.uploadFile(imgBytes,"jpg");
             if (StringUtils.isNotBlank(filePath)) {
-                return RespBean.success("上传成功", fileDTO, 1);
+                System.out.println("返回路径：" + service+filePath);
+                FileDTO filedto = new FileDTO();
+                filedto.setFilePath(service+filePath);
+                return RespBean.success("上传成功", filedto, 1);
             } else {
                 return RespBean.error("上传失败");
             }
