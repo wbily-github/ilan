@@ -58,7 +58,7 @@ public class LoginService {
         if (StringUtils.isEmpty(userDto.getCode()) || !captcha.equalsIgnoreCase(userDto.getCode())) {
             return RespBean.error("验证码输入错误，请重新输入！");
         }
-        if (null == userDetails || passwordEncoder.matches(userDto.getPassword(), userDetails.getPassword())) {
+        if (null == userDetails ||null == userDetails.getUsername()|| passwordEncoder.matches(userDto.getPassword(), userDetails.getPassword())) {
             return RespBean.error("用户名或密码不正确");
         }
         if (userDetails.isEnabled()) {
@@ -148,7 +148,7 @@ public class LoginService {
             return users.get(0);
         } else {
             log.info("有没有搞错，都没查出来却能登陆");
-            return null;
+            return new UserDTO();
         }
     }
 
