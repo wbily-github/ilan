@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Mapper
 public interface LoginDAO {
-    @Select("<script> select username,icon,DATE_ADD(now(),INTERVAL -2 MONTH)> nameChangeTime asnameChangeTime" +
+    @Select("<script> select username,icon,DATE_ADD(now(),INTERVAL -2 MONTH)> nameChangeTime as nameChangeTime" +
             ", id,qx,sbbsj  from user where 1=1 "
             + "<if test='id!= null and !\"\".equals(id)'> and id = #{id} </if>"
             + "<if test='username!= null and !\"\".equals(username)'> and username = #{username} </if>"
@@ -48,12 +48,13 @@ public interface LoginDAO {
      * @param userDto
      * @return
      */
-    @Update(" <script> update user set id = unix_timestamp(now()) " +
+    @Update(" <script> update user  " +
             " <trim prefix=\"set\" suffixOverrides=\",\"> "
+            + "  id = unix_timestamp(now()), "
             + "<if test='username != null and !\"\".equals(username)'> username=#{username}, </if>"
             + "<if test='icon != null and !\"\".equals(icon)'> icon=#{icon}, </if>"
             + "<if test='password != null and !\"\".equals(password)'> password=#{password}, </if>" +
             " </trim>where 1=1 " +
             "and id = #{id} </script> ")
-    List<UserDTO> updateUserInfo(UserDTO userDto);
+    void updateUserInfo(UserDTO userDto);
 }

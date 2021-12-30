@@ -162,12 +162,11 @@ public class LoginService {
             UserDTO dto = new UserDTO();
             dto.setId(userDto.getId());
             List<UserDTO> user11 = loginDao.queryLoginInfo(userDto);
-            if (null != user11 || user11.size() == 0) {
+            if (null == user11 || user11.size() == 0) {
                 return RespBean.error("用户信息不存在");
-            } else if (user11.get(0).getUsername() != userDto.getUsername()) {
-                if(0 == user11.get(0).getNameChangeTime()){
-                    return RespBean.error("修改失败,距离上次修改用户名未满一个月，不能修改");
-                }
+            } else if (user11.get(0).getUsername() != userDto.getUsername()
+                    && 0 == user11.get(0).getNameChangeTime()) {
+                return RespBean.error("修改失败,距离上次修改用户名未满一个月，不能修改");
             }
             loginDao.updateUserInfo(userDto);
             return RespBean.success("修改成功", userDto, 1);
