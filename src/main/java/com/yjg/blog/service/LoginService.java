@@ -5,7 +5,6 @@ import com.yjg.blog.config.MyUserDetailsService;
 import com.yjg.blog.mybatis.dao.LoginDAO;
 import com.yjg.blog.pojo.RespBean;
 import com.yjg.blog.pojo.RespBean1;
-import com.yjg.blog.pojo.SysRole;
 import com.yjg.blog.pojo.UserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
