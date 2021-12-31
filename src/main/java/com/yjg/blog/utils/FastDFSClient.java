@@ -24,7 +24,13 @@ public class FastDFSClient {
             path=path.substring(6);
             conf = conf.replace("classpath:",URLDecoder.decode(path,"UTF-8"));
         }
-        ClientGlobal.init(conf);
+        /*第一种init方法,该方法失效时可以尝试第二种写法,其原因并不清楚*/
+        log.info("WWWWWWWWWWWWWWWWWWWWWWWWWWW"+conf);
+        log.info("WWWWWWWWWWWWWWWWWWWWWWWWWWW"+this.getClass().getResource("/"));
+
+        log.info("WWWWWWWWWWWWWWWWWWWWWWWWWWW"+this.getClass().getResource("/").getPath());
+        ClientGlobal.init(this.getClass().getResource("/").getPath()+"fdfs_client.properties");
+
         trackerClient = new TrackerClient();
         trackerServer = trackerClient.getConnection();
         storageServer = null;
