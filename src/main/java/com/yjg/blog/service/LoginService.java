@@ -64,10 +64,14 @@ public class LoginService {
         if (null == userDetails || null == userDetails.getUsername() || passwordEncoder.matches(userDto.getPassword(), userDetails.getPassword())) {
             return RespBean.error("用户名或密码不正确");
         }
+        log.info("00000000000000000000000000"+userDetails.isEnabled());
         if (userDetails.isEnabled()) {
             return RespBean.error("账号被禁用，请联系管理员");
         }
         List<UserDTO> users = loginDao.queryLoginInfo(userDto);
+        if(0 == users.get(0).getZhzt()){
+            return RespBean.error("账号被禁用，请联系管理员");
+        }
         //更新security登录用户对象
         log.info("$&^%$#$%&^#@" + userDetails.getAuthorities());
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword()
