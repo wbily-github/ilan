@@ -200,6 +200,6 @@ public class CaptchaController {
 
     @PostMapping("/blog/logout")
     public RespBean logout() {
-        return RespBean.success("注销成功", 0);
+        return RespBean.success("注销成功", new UserDTO(),0);
     }
 }
