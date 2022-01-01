@@ -22,6 +22,7 @@ import java.util.List;
 @ApiModel(value = "login对象", description = "登录bean")
 public class UserDTO implements UserDetails {
     private Long id;
+    private Integer zhzt;
     private String username;
     private String password;
     private String icon;
@@ -90,6 +91,11 @@ public class UserDTO implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+
+        if(1 != this.zhzt) {
+            return true;
+        }else{
+            return false;
+        }
     }
 }
