@@ -2,9 +2,9 @@ package com.yjg.blog.utils;
 import lombok.extern.slf4j.Slf4j;
 import org.csource.common.NameValuePair;
 import org.csource.fastdfs.*;
+
 import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.net.URLDecoder;
 
 /**
  * FastDFS工具类【实现文件上传、下载、删除、查询】
@@ -19,18 +19,17 @@ public class FastDFSClient {
     private  StorageClient1 storageClient = null;
 
     public FastDFSClient(String conf) throws Exception {
-        if (conf.contains("classpath:")) {
+     /*   if (conf.contains("classpath:")) {
             String path = URLDecoder.decode(getClass().getProtectionDomain().getCodeSource().getLocation().toString(),"UTF-8");
             path=path.substring(6);
             conf = conf.replace("classpath:",URLDecoder.decode(path,"UTF-8"));
-        }
-        /*第一种init方法,该方法失效时可以尝试第二种写法,其原因并不清楚*/
-        log.info("WWWWWWWWWWWWWWWWWWWWWWWWWWW"+conf);
-        log.info("WWWWWWWWWWWWWWWWWWWWWWWWWWW"+this.getClass().getResource("/"));
-
-        log.info("WWWWWWWWWWWWWWWWWWWWWWWWWWW"+this.getClass().getResource("/").getPath());
-        ClientGlobal.init(this.getClass().getResource("/").getPath()+"fdfs_client.properties");
-
+        }*/
+        ClientGlobal.initByProperties("fdfsclient.properties");
+       // ClassPathResource cpr = new ClassPathResource("fdfsclient.properties");
+      //  log.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA"+cpr.getClassLoader().getResource("fdfsclient.properties").toURI().getPath());
+      //  ClientGlobal.init(cpr.getClassLoader().getResource("fdfsclient.properties").toURI().getPath());
+       // ClientGlobal.init(this.getClass().getClassLoader().getResource("/resources/fdfsclient.properties").getPath());
+        //ClientGlobal.init(this.getClass().getResource("/").getPath()+"fdfsclient.properties");
         trackerClient = new TrackerClient();
         trackerServer = trackerClient.getConnection();
         storageServer = null;

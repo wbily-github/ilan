@@ -22,7 +22,7 @@ import java.io.FileOutputStream;
 public class CommonController {
     @Value("${service.se}")
     private String service;
-    private String CONF_FILENAME = "fdfs_client.properties";
+    private String CONF_FILENAME = "fdfsclient.properties";
 
     /**
      * 文件上传
@@ -74,7 +74,7 @@ public class CommonController {
     public RespBean1 deleteFast(@RequestBody FileDTO fileDTO, HttpServletRequest request) throws Exception {
 
         try {
-            String confUrl = this.getClass().getClassLoader().getResource("/fdfs_client.properties").getPath();
+            String confUrl = this.getClass().getClassLoader().getResource("/fdfsclient.properties").getPath();
             FastDFSClient fastDFSClient = new FastDFSClient(confUrl);
             //删除文件
             int flag = fastDFSClient.delete_file(fileDTO.getFilePath());
@@ -94,7 +94,7 @@ public class CommonController {
      */
     @RequestMapping(value = "file/downloadFast", method = RequestMethod.GET)
     public void downloadFast(@RequestBody FileDTO fileDTO, HttpServletRequest request) throws Exception {
-        String confUrl = this.getClass().getClassLoader().getResource("/fdfs_client.properties").getPath();
+        String confUrl = this.getClass().getClassLoader().getResource("/fdfsclient.properties").getPath();
         FastDFSClient fastDFSClient = new FastDFSClient(confUrl);
         //下载文件到用户桌面位置
         FileSystemView fsv = FileSystemView.getFileSystemView();
@@ -112,7 +112,7 @@ public class CommonController {
 
     @RequestMapping(value = "file/queryFastInfo", method = RequestMethod.GET)
     public void queryFastInfo(HttpServletRequest request) throws Exception {
-        String confUrl = this.getClass().getClassLoader().getResource("/fdfs_client.properties").getPath();
+        String confUrl = this.getClass().getClassLoader().getResource("/fdfsclient.properties").getPath();
         FastDFSClient fastDFSClient = new FastDFSClient(confUrl);
         //获取文件信息
         FileInfo file = fastDFSClient.getFile("group1", "M00/00/00/wKgrPFpe9OqAWsHxAAH5yvc2jn8251.jpg");

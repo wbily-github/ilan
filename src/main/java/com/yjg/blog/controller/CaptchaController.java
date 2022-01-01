@@ -116,7 +116,7 @@ public class CaptchaController {
     @PostMapping("/blog/user/update")
     public RespBean saveUserInfo(@RequestBody UserDTO userDto, HttpServletRequest request) {
         log.info("修改信息入参" + userDto.toString());
-        return loginService.updateUser(userDto);
+        return loginService.updateUser(userDto,request);
     }
 
     /**

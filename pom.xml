@@ -89,15 +89,16 @@
         </dependency>
         <!-- fastdfs -->
         <dependency>
-            <groupId>com.hueason</groupId>
-            <artifactId>fastdfs_client</artifactId>
-            <version>1.20</version>
+                <groupId>org.csource</groupId>
+                <artifactId>fastdfs-client-java</artifactId>
+                <version>1.27-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
         </dependency>
+
 
         <!--easy poi依赖-->
         <dependency>

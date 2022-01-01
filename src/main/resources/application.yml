@@ -39,4 +39,4 @@ jwt:
   # JWT 负载中拿到开头
   tokenHead: Bearer
 service:
-  se: 101.42.232.134/
+  se: http://www.ilan.ltd/

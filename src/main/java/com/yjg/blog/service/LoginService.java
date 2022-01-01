@@ -32,6 +32,10 @@ import java.util.Map;
 @Service
 public class LoginService {
 
+    @Value("${jwt.tokenHeader}")
+    private String tokenHeader;
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
     @Autowired
     private LoginDAO loginDao;
     @Autowired
@@ -40,8 +44,7 @@ public class LoginService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-    @Value("${jwt.tokenHead}")
-    private String tokenHead;
+
 
     /**
      * 登录返沪token
@@ -58,7 +61,7 @@ public class LoginService {
         if (StringUtils.isEmpty(userDto.getCode()) || !captcha.equalsIgnoreCase(userDto.getCode())) {
             return RespBean.error("验证码输入错误，请重新输入！");
         }
-        if (null == userDetails ||null == userDetails.getUsername()|| passwordEncoder.matches(userDto.getPassword(), userDetails.getPassword())) {
+        if (null == userDetails || null == userDetails.getUsername() || passwordEncoder.matches(userDto.getPassword(), userDetails.getPassword())) {
             return RespBean.error("用户名或密码不正确");
         }
         if (userDetails.isEnabled()) {
@@ -150,6 +153,7 @@ public class LoginService {
             log.info("有没有搞错，都没查出来却能登陆");
             return new UserDTO();
         }
+
     }
 
     /**
@@ -158,7 +162,7 @@ public class LoginService {
      * @param userDto
      * @return
      */
-    public RespBean updateUser(UserDTO userDto) {
+    public RespBean updateUser(UserDTO userDto, HttpServletRequest request) {
         try {
             UserDTO dto = new UserDTO();
             dto.setId(userDto.getId());
@@ -170,7 +174,16 @@ public class LoginService {
                 return RespBean.error("修改失败,距离上次修改用户名未满一个月，不能修改");
             }
             loginDao.updateUserInfo(userDto);
-            return RespBean.success("修改成功", userDto, 1);
+            //生成新的token
+            String authHear = request.getHeader(tokenHeader).substring(tokenHead.length());
+            String token = jwtTokenUtil.refreshToken(authHear);
+            Map<String, String> tokenMap = new HashMap<>(3);
+            tokenMap.put("token", token);
+            tokenMap.put("username", userDto.getUsername());
+            tokenMap.put("icon", userDto.getIcon());
+            log.info("token++++++++++++++++++++++++++++" + token);
+            tokenMap.put("tokenHead", tokenHead);
+            return RespBean.success("修改成功", tokenMap, 1);
         } catch (Exception e) {
             log.error("修改失败", e);
             return RespBean.error("修改失败");
