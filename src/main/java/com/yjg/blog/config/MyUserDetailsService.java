@@ -22,15 +22,6 @@ public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     LoginService loginService;
 
-  /*  @Override
-    public UserDetails loadUserByUsername(String username) {
-        UserDTO user = loginService.getUserByUserName(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        return new MyUserPrincipal(user);
-    }
-*/
     //test2
      @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{

@@ -30,19 +30,15 @@ public class JwtAuthencationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHear = request.getHeader(tokenHeader);
-        log.info("^^^^^^^^^^^^^^^^^^^authHear^"+authHear);
         //判断存在token
         if (null != authHear && authHear.startsWith(tokenHead)) {
             String authTken = authHear.substring(tokenHead.length());
-            log.info("{}{}{}{}{}{}{}{}{}{}"+authTken);
             String username = jwtTokenUtil.getUsername(authTken);
-            log.info("%%%%%%%%%%%%%" + username);
             //token存在没登录
             if (null != username) {
                 UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
                 //token有效，重新设置用户对象
                 if (jwtTokenUtil.isTokenUsing(authTken, userDetails)) {
-                    log.info("token有效了"+userDetails.toString());
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
