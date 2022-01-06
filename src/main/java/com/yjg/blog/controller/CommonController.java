@@ -37,13 +37,13 @@ public class CommonController {
         // 1、把FastDFS提供的jar包添加到工程中
         // 2、初始化全局配置。加载一个配置文件。
         try {
-            String confUrl = this.getClass()
+          /*  String confUrl = this.getClass()
                     .getClassLoader()
                     .getResource(CONF_FILENAME)
-                    .getPath();
-            FastDFSClient fastDFSClient = new FastDFSClient(confUrl);
+                    .getPath();*/
+            FastDFSClient fastDFSClient = new FastDFSClient("");
             System.out.println("入参：" +file.toString());
-            String contentType = file.getContentType();
+            //String contentType = file.getContentType();
             //校检文件的类型
             byte[] imgBytes = file.getBytes();
             //上传文件

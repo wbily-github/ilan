@@ -19,17 +19,9 @@ public class FastDFSClient {
     private  StorageClient1 storageClient = null;
 
     public FastDFSClient(String conf) throws Exception {
-     /*   if (conf.contains("classpath:")) {
-            String path = URLDecoder.decode(getClass().getProtectionDomain().getCodeSource().getLocation().toString(),"UTF-8");
-            path=path.substring(6);
-            conf = conf.replace("classpath:",URLDecoder.decode(path,"UTF-8"));
-        }*/
+
         ClientGlobal.initByProperties("fdfsclient.properties");
-       // ClassPathResource cpr = new ClassPathResource("fdfsclient.properties");
-      //  log.info("AAAAAAAAAAAAAAAAAAAAAAAAAAA"+cpr.getClassLoader().getResource("fdfsclient.properties").toURI().getPath());
-      //  ClientGlobal.init(cpr.getClassLoader().getResource("fdfsclient.properties").toURI().getPath());
-       // ClientGlobal.init(this.getClass().getClassLoader().getResource("/resources/fdfsclient.properties").getPath());
-        //ClientGlobal.init(this.getClass().getResource("/").getPath()+"fdfsclient.properties");
+      
         trackerClient = new TrackerClient();
         trackerServer = trackerClient.getConnection();
         storageServer = null;
