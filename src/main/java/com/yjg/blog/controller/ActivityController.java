@@ -27,10 +27,22 @@ public class ActivityController {
 	 * @throws Exception
 	 */
 
-	@RequestMapping(value = "blog/insertArticle", method = RequestMethod.GET)
+	@RequestMapping(value = "/blog/insertArticle", method = RequestMethod.POST)
 	public RespBean insertArcitleInfo(@RequestBody Activity activity, HttpServletRequest request) throws Exception {
 		log.info("保存动态入参~" + activity);
 		return activityService.insertArcitle(activity,request);
+	}
+	/**
+	 * 查询动态
+	 *
+	 * @param request
+	 * @throws Exception
+	 */
+
+	@RequestMapping(value = "/blog/queryArticle", method = RequestMethod.POST)
+	public RespBean queryArcitleInfo(@RequestBody Activity activity, HttpServletRequest request) throws Exception {
+		log.info("保存动态入参~" + activity);
+		return activityService.queryArcitle(activity,request);
 	}
 
 }
