@@ -1,7 +1,5 @@
 package com.yjg.blog.config;
 
-import com.yjg.blog.pojo.UserDTO;
-import com.yjg.blog.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +18,7 @@ import java.util.List;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
 
-    private LoginService loginService;
     @Autowired
     private RestAuthoriztionEntryPoint restAuthoriztionEntryPoint;
     @Autowired

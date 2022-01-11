@@ -22,7 +22,6 @@ import java.io.FileOutputStream;
 public class CommonController {
     @Value("${service.se}")
     private String service;
-    private String CONF_FILENAME = "fdfsclient.properties";
 
     /**
      * 文件上传

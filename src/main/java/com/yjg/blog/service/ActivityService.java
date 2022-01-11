@@ -48,7 +48,7 @@ public class ActivityService {
 			activity.setUsername(auth.getName());
 			// 插入动态表
 			Long id = new Date().getTime();
-			log.info("@@@id" + id);
+			
 			activity.setId(id);
 			activityDAO.inertActivity(activity);
 			// 插入图片表
@@ -57,6 +57,7 @@ public class ActivityService {
 				for (ImgDTO img : imgs) {
 					img.setArticleId(id);
 					img.setUrlKey(activity.getUsername());
+					log.info("@@@img" + img);
 					activityDAO.inertImg(img);
 				}
 			}
@@ -98,5 +99,22 @@ public class ActivityService {
 			return RespBean.error("查询失败");
 		}
 		return RespBean.success("查询成功", activities, activities.size());
+	}
+
+	/**
+	 * 删除动态
+	 * 
+	 * @param id
+	 * @param request
+	 * @return
+	 */
+	public RespBean deleteArcitle(String ids, HttpServletRequest request) {
+		try {
+			activityDAO.deleteArcile(ids);
+		} catch (Exception e) {
+			log.error("删除失败", e.getMessage(), e);
+			return RespBean.error("删除失败");
+		}
+		return RespBean.success("删除成功",ids, 1);
 	}
 }

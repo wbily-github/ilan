@@ -21,7 +21,7 @@ public interface QueryDAO {
     List<Article> queryLoginInfo(Article article);
 
     @Insert("<script> insert into article (id,title,content,urlKey, missTime,remark,author) " +
-            "values (unix_timestamp(now()),#{title},#{content},#{urlKey},now(),#{remark},#{author})" +
+            "values (REPLACE(unix_timestamp(current_timestamp(3)),'.',''),#{title},#{content},#{urlKey},now(),#{remark},#{author})" +
             "</script>")
     void insertArticleInfo(Article article);
 

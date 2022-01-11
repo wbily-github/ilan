@@ -29,7 +29,7 @@ public interface LoginDAO {
     /**
      * 保存
      */
-    @Insert("insert into user ( id,username,password )values(unix_timestamp(now()),#{username},#{password}) ")
+    @Insert("insert into user ( id,username,password )values(REPLACE(unix_timestamp(current_timestamp(3)),'.',''),#{username},#{password}) ")
     void insertLoginInfo(UserDTO userDto);
 
     @Select("select id,accountToken from accounttoken where 1=1 "
@@ -50,7 +50,7 @@ public interface LoginDAO {
      */
     @Update(" <script> update user  " +
             " <trim prefix=\"set\" suffixOverrides=\",\"> "
-            + "  id = unix_timestamp(now()), "
+            + "  id = REPLACE(unix_timestamp(current_timestamp(3)),'.',''), "
             + "<if test='username != null and !\"\".equals(username)'> username=#{username}, </if>"
             + "<if test='icon != null and !\"\".equals(icon)'> icon=#{icon}, </if>"
             + "<if test='password != null and !\"\".equals(password)'> password=#{password}, </if>" +

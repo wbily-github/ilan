@@ -4,6 +4,7 @@ import com.yjg.blog.pojo.Activity;
 import com.yjg.blog.pojo.RespBean;
 import com.yjg.blog.service.ActivityService;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,8 +31,9 @@ public class ActivityController {
 	@RequestMapping(value = "/blog/insertArticle", method = RequestMethod.POST)
 	public RespBean insertArcitleInfo(@RequestBody Activity activity, HttpServletRequest request) throws Exception {
 		log.info("保存动态入参~" + activity);
-		return activityService.insertArcitle(activity,request);
+		return activityService.insertArcitle(activity, request);
 	}
+
 	/**
 	 * 查询动态
 	 *
@@ -41,8 +43,21 @@ public class ActivityController {
 
 	@RequestMapping(value = "/blog/queryArticle", method = RequestMethod.POST)
 	public RespBean queryArcitleInfo(@RequestBody Activity activity, HttpServletRequest request) throws Exception {
-		log.info("保存动态入参~" + activity);
-		return activityService.queryArcitle(activity,request);
+		log.info("查询动态入参~" + activity);
+		return activityService.queryArcitle(activity, request);
+	}
+
+	/**
+	 * 删除动态
+	 *
+	 * @param request
+	 * @throws Exception
+	 */
+
+	@RequestMapping(value = "/blog/deleteArticle", method = RequestMethod.POST)
+	public RespBean deleteArcitleInfo(@RequestBody String id, HttpServletRequest request) throws Exception {
+		log.info("删除动态入参~" + id.substring(0, id.length() - 1));
+		return activityService.deleteArcitle(id.substring(0, id.length() - 1), request);
 	}
 
 }
