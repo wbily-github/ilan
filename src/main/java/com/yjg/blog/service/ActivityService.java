@@ -4,6 +4,8 @@ import com.yjg.blog.mybatis.dao.ActivityDAO;
 import com.yjg.blog.mybatis.dao.LoginDAO;
 import com.yjg.blog.pojo.Activity;
 import com.yjg.blog.pojo.ImgDTO;
+import com.yjg.blog.pojo.MyPhoto;
+import com.yjg.blog.pojo.MyPhotoVO;
 import com.yjg.blog.pojo.RespBean;
 import com.yjg.blog.pojo.UserDTO;
 
@@ -48,7 +50,7 @@ public class ActivityService {
 			activity.setUsername(auth.getName());
 			// 插入动态表
 			Long id = new Date().getTime();
-			
+
 			activity.setId(id);
 			activityDAO.inertActivity(activity);
 			// 插入图片表
@@ -115,6 +117,36 @@ public class ActivityService {
 			log.error("删除失败", e.getMessage(), e);
 			return RespBean.error("删除失败");
 		}
-		return RespBean.success("删除成功",ids, 1);
+		return RespBean.success("删除成功", ids, 1);
+	}
+
+	/**
+	 * 查询图库
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public RespBean queryMyPhoto(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		List<MyPhotoVO> pbotos = new ArrayList<MyPhotoVO>();
+		try {
+			// 获取用户名
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			MyPhotoVO myPhotoVo = new MyPhotoVO();
+			myPhotoVo.setOwner(auth.getName());
+			pbotos = activityDAO.queryMyPhotoFolder(myPhotoVo);
+			for (MyPhotoVO pho : pbotos) {
+				MyPhoto myPhoto = new MyPhoto();
+				myPhoto.setFolderid(pho.getFolderid());
+				myPhoto.setOwner(pho.getOwner());
+				List<MyPhoto> oto = activityDAO.queryMyPhoto(myPhoto);
+				pho.setImgs(oto);
+			}
+			log.info("pbotosWWWWWWWWWWWWWWWWW", pbotos);
+		} catch (Exception e) {
+			log.error("查询失败", e.getMessage(), e);
+			return RespBean.error("查询失败");
+		}
+		return RespBean.success("查询成功", pbotos, pbotos.size());
 	}
 }

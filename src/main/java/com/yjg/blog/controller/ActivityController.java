@@ -59,5 +59,17 @@ public class ActivityController {
 		log.info("删除动态入参~" + id.substring(0, id.length() - 1));
 		return activityService.deleteArcitle(id.substring(0, id.length() - 1), request);
 	}
+	/**
+	 * 查询相册
+	 *
+	 * @param request
+	 * @throws Exception
+	 */
+
+	@RequestMapping(value = "/blog/queryMyPhoto", method = RequestMethod.POST)
+	public RespBean queryMyPhotoInfo( HttpServletRequest request) throws Exception {
+		log.info("查询图库入参~");
+		return activityService.queryMyPhoto(request);
+	}
 
 }
