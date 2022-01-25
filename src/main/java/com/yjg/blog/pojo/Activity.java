@@ -15,4 +15,6 @@ public class Activity {
 	private String createTime;
 	private String username;
 	private List<ImgDTO> imgs;
+	private String dianzan;
+	private String zanUser;
 }

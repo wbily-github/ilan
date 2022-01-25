@@ -4,6 +4,8 @@ import com.yjg.blog.pojo.FileDTO;
 import com.yjg.blog.pojo.RespBean;
 import com.yjg.blog.pojo.RespBean1;
 import com.yjg.blog.utils.FastDFSClient;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.csource.fastdfs.FileInfo;
@@ -19,6 +21,7 @@ import java.io.FileOutputStream;
 
 @Slf4j
 @RestController
+@Api(tags = "文件上传")
 public class CommonController {
     @Value("${service.se}")
     private String service;
@@ -31,8 +34,9 @@ public class CommonController {
      * @return
      * @throws Exception
      */
+    @ApiOperation(value = "图片上传")
     @RequestMapping(value = "/file/uploadFast", method = RequestMethod.POST)
-    public RespBean uploadFast( @RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
+    public RespBean uploadFast(@RequestParam("file") MultipartFile file, HttpServletRequest request) throws Exception {
         // 1、把FastDFS提供的jar包添加到工程中
         // 2、初始化全局配置。加载一个配置文件。
         try {
@@ -41,16 +45,16 @@ public class CommonController {
                     .getResource(CONF_FILENAME)
                     .getPath();*/
             FastDFSClient fastDFSClient = new FastDFSClient("");
-            System.out.println("入参：" +file.toString());
+            System.out.println("入参：" + file.toString());
             //String contentType = file.getContentType();
             //校检文件的类型
             byte[] imgBytes = file.getBytes();
             //上传文件
-            String filePath = fastDFSClient.uploadFile(imgBytes,"jpg");
+            String filePath = fastDFSClient.uploadFile(imgBytes, "jpg");
             if (StringUtils.isNotBlank(filePath)) {
-                System.out.println("返回路径：" + service+filePath);
+                System.out.println("返回路径：" + service + filePath);
                 FileDTO filedto = new FileDTO();
-                filedto.setFilePath(service+filePath);
+                filedto.setFilePath(service + filePath);
                 return RespBean.success("上传成功", filedto, 1);
             } else {
                 return RespBean.error("上传失败");

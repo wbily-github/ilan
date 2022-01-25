@@ -7,6 +7,8 @@ import com.yjg.blog.pojo.RespBean1;
 import com.yjg.blog.pojo.UserDTO;
 import com.yjg.blog.service.LoginService;
 import com.yjg.blog.service.ArticleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,7 @@ import java.security.Principal;
 @Slf4j
 @Validated
 @RestController
+@Api(tags = "验证码与账户管理")
 public class CaptchaController {
 
     @Autowired
@@ -43,6 +46,7 @@ public class CaptchaController {
      * @since 1.0.0
      */
     // @GetMapping(value = "/captcha", produces = "image/jpeg")
+    @ApiOperation(value = "获取验证码", notes = "谷歌验证码获取方法")
     @RequestMapping(value = "/blog/captcha", method = RequestMethod.GET, produces = "image/jpeg")
     public void captcha(HttpServletRequest request, HttpServletResponse response) {
         // 定义response输出类型为image/jpeg类型
@@ -91,6 +95,7 @@ public class CaptchaController {
      * @param request
      * @return
      */
+    @ApiOperation(value = "账号登录", notes = "登录返回token")
     @RequestMapping(value = "/blog/login/login", method = RequestMethod.POST)
     public RespBean login(@RequestBody UserDTO userDto, HttpServletRequest request) {
         log.info("#########QQQ登录入参QQQ#######" + userDto);
@@ -104,6 +109,7 @@ public class CaptchaController {
      * @param request
      * @return
      */
+    @ApiOperation(value = "账号注册")
     @PostMapping("/blog/login/register")
     public RespBean register(@RequestBody UserDTO userDto, HttpServletRequest request) {
         log.info("#########QQQ注册入参QQQ#######" + userDto);
@@ -113,6 +119,7 @@ public class CaptchaController {
     /**
      * 更新用户信息
      */
+    @ApiOperation(value = "用户信息修改")
     @PostMapping("/blog/user/update")
     public RespBean saveUserInfo(@RequestBody UserDTO userDto, HttpServletRequest request) {
         log.info("修改信息入参" + userDto.toString());
@@ -126,6 +133,7 @@ public class CaptchaController {
      * @param request
      * @return
      */
+    @ApiOperation(value = "留言查询")
     @PostMapping("/blog/getArt")
     public RespBean getArt(@Validated @RequestBody Article article, HttpServletRequest request) {
         log.info("#########QQQ查询入参QQQ#######" + article);
@@ -139,6 +147,7 @@ public class CaptchaController {
      * @param request
      * @return
      */
+    @ApiOperation(value = "留言新增")
     @PostMapping("/blog/insertArt")
     public RespBean insertArt(@RequestBody Article article, HttpServletRequest request) {
         log.info("#########QQQ查询入参QQQ#######" + article);
@@ -158,6 +167,7 @@ public class CaptchaController {
         return queryService.insertArticleInfo(article);
     }
 
+    @ApiOperation(value = "简介查询")
     @PostMapping("/blog/login/kjjj")
     public RespBean1 getKjjj(HttpServletRequest request) {
         log.info("#########QQQ简介查询入参QQQ#######");
@@ -169,6 +179,7 @@ public class CaptchaController {
     /**
      * 今日份动态
      */
+    @ApiOperation(value = "动态查询")
     @PostMapping("/blog/login/getHot")
     public RespBean1 getArtToday() {
         log.info("#########QQQ动态入参QQQ#######");
@@ -181,6 +192,7 @@ public class CaptchaController {
      * @param principal
      * @return
      */
+    @ApiOperation(value = "获取登录信息")
     @GetMapping("/blog/user/info")
     public UserDTO getUserInfo(Principal principal) {
         if (null == principal) {
@@ -197,7 +209,7 @@ public class CaptchaController {
      *
      * @return
      */
-
+    @ApiOperation(value = "退出系统")
     @PostMapping("/blog/logout")
     public RespBean logout() {
         UserDTO userDTO = new UserDTO();

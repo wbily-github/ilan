@@ -45,6 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/blog/login/**")
                 .permitAll()
                 .antMatchers("/blog/captcha").permitAll()
+                .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
+                        "/swagger-resources", "/swagger-resources/configuration/security",
+                        "/swagger-ui.html", "/webjars/**").permitAll()
                 //拦截其他的，都需要认证
                 .anyRequest()
                 .authenticated()
