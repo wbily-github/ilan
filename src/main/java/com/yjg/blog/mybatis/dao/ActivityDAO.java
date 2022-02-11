@@ -95,8 +95,17 @@ public interface ActivityDAO {
 	 * @param myPhoto
 	 * @return
 	 */
-	@Select("select distinct folder,folderid,owner from myphoto where owner = #{owner} ")
+	@Select("select distinct a.folder,a.folderid,a.owner from folder a where a.owner = #{owner} ")
 	public List<MyPhotoVO> queryMyPhotoFolder(MyPhotoVO myPhoto);
+
+	/**
+	 * 保存图库folder
+	 * 
+	 * @param photo
+	 */
+	@Insert("insert into folder (id,folder,folderId,foldertype,owner) VALUES("
+			+ "REPLACE(unix_timestamp(current_timestamp(3)),'.',''),#{folder},REPLACE(unix_timestamp(current_timestamp(3)),'.',''),#{folderType},#{owner}) ")
+	public void insertFolder(MyPhotoVO photo);
 
 	/**
 	 * 保存点赞
@@ -108,6 +117,7 @@ public interface ActivityDAO {
 
 	/**
 	 * 删除赞
+	 * 
 	 * @param fabulous2
 	 */
 	@Delete("delete from dianzan where targetid = #{targetId} and username = #{username}")

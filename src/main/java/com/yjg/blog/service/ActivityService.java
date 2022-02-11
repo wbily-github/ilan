@@ -1,6 +1,5 @@
 package com.yjg.blog.service;
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.yjg.blog.mybatis.dao.ActivityDAO;
 import com.yjg.blog.mybatis.dao.LoginDAO;
 import com.yjg.blog.pojo.Activity;
@@ -185,7 +184,6 @@ public class ActivityService {
 	public RespBean zanToArcitle(String id, HttpServletRequest request) {
 		try {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
 			Activity activity = new Activity();
 			activity.setId(Long.valueOf(id));
 			activity.setZanUser(auth.getName());
@@ -203,6 +201,31 @@ public class ActivityService {
 		} catch (Exception e) {
 			log.error("点赞失败", e.getMessage(), e);
 			return RespBean.error("点赞失败");
+		}
+	}
+
+	/**
+	 * 新增图片文件夹
+	 * 
+	 * @param photo
+	 * @param request
+	 * @return
+	 */
+	public RespBean savePhotoFolder(MyPhotoVO photo, HttpServletRequest request) {
+		try {
+			if ("私密相册".equals(photo.getFolderType())) {
+				photo.setFolderType(1);
+			} else {
+				photo.setFolderType(0);
+			}
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			photo.setOwner(auth.getName());
+			activityDAO.insertFolder(photo);
+			RespBean re = queryMyPhoto(request);
+			return RespBean.success("新增相册成功", re.getObj(), 1);
+		} catch (Exception e) {
+			log.error("新增相册失败", e.getMessage(), e);
+			return RespBean.error("新增相册失败");
 		}
 	}
 }

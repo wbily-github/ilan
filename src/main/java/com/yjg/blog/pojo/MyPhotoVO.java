@@ -8,6 +8,7 @@ import lombok.Data;
 public class MyPhotoVO {
 private String folder;
 private String folderid;
+private Integer folderType;
 private String owner;
 private List<MyPhoto> imgs; 
 }

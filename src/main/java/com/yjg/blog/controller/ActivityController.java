@@ -1,6 +1,7 @@
 package com.yjg.blog.controller;
 
 import com.yjg.blog.pojo.Activity;
+import com.yjg.blog.pojo.MyPhotoVO;
 import com.yjg.blog.pojo.RespBean;
 import com.yjg.blog.service.ActivityService;
 import io.swagger.annotations.Api;
@@ -74,6 +75,18 @@ public class ActivityController {
 	public RespBean queryMyPhotoInfo(HttpServletRequest request) throws Exception {
 		log.info("查询图库入参~");
 		return activityService.queryMyPhoto(request);
+	}
+	/**
+	 * 相册保存
+	 * @param photo
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@ApiOperation(value = "相册保存")
+	@RequestMapping(value = "/blog/savePhotoFolder", method = RequestMethod.POST)
+	public RespBean savePhotoFolder(@RequestBody MyPhotoVO photo,HttpServletRequest request) throws Exception {
+		return activityService.savePhotoFolder(photo,request);
 	}
 
 	/**
